@@ -2,15 +2,6 @@
 
 Social Media API using Node.js, Express and MongoDB with endpoints for login, signup, creating/deleting post, liking and commenting posts. Implemented JWT Authentication using Passport authentication middleware.
   
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`MONGO_URI`
-
-`JWT_SECRET`
-
-  
 ## Features
 
 - Login / Signup (using JWT Authentication)
@@ -44,6 +35,13 @@ Start the server
   npm start
 ```
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`MONGO_URI`
+
+`JWT_SECRET`
   
 ## Tech Stack
 
