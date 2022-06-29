@@ -41,7 +41,7 @@ To run this project, you will need to add the following environment variables to
 
 `MONGO_URI`
 
-`JWT_SECRET`
+`ACCESS_TOKEN_SECRET`
   
 ## Tech Stack
 
