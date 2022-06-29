@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const User = require('../../models/user');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const User = require("../../models/user");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ login = async (req, res) => {
       // User found then compare the password
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) {
-          errors.push('Internal Server Errors');
+          errors.push("Internal Server Errors");
           res.status(500).json({ message: errors, success: false });
         } else {
           // Password match
@@ -25,7 +25,7 @@ login = async (req, res) => {
             const payload = { id: user._id, name: user.name };
             jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
               res.status(200).json({
-                message: 'Signed In',
+                message: "Signed In",
                 user: payload,
                 token,
                 success: true,
@@ -33,17 +33,17 @@ login = async (req, res) => {
             });
           } else {
             // Password does not match
-            errors.push('Wrong password');
+            errors.push("Wrong password");
             return res.status(200).json({ message: errors, success: false });
           }
         }
       });
     } else {
-      errors.push('User not found');
+      errors.push("User not found");
       return res.status(200).json({ message: errors, success: false });
     }
   } catch (err) {
-    errors.push('Internal Server Error');
+    errors.push("Internal Server Error");
     return res.status(200).json({ message: errors, success: false });
   }
 };
@@ -52,11 +52,14 @@ login = async (req, res) => {
 signup = async (req, res) => {
   let errors = [];
   try {
-    const { name, username, email, password, confirm_password } = req.body;
+    let { name, username, email, password, confirm_password } = req.body;
+
+    username = username.split(/\s/).join("");
+    email = email.split(/\s/).join("");
 
     // Check fields
     if (!name || !username || !email || !password || !confirm_password) {
-      errors.push('Please fill in all fields');
+      errors.push("Please fill in all fields");
     }
 
     // Check password
@@ -75,12 +78,12 @@ signup = async (req, res) => {
       // Email already exists
       let user = await User.findOne({ email });
       if (user) {
-        errors.push('Email already exists');
+        errors.push("Email already exists");
         return res.status(200).json({ message: errors, success: false });
       } else {
         // Username already exists
         user = await User.findOne({ username });
-        errors.push('Username already exists');
+        errors.push("Username already exists");
         if (user) {
           return res.status(200).json({ message: errors, success: false });
         } else {
@@ -97,7 +100,7 @@ signup = async (req, res) => {
             bcrypt.hash(user.password, salt, async (err, hash) => {
               try {
                 if (err) {
-                  errors.push('Internal Server Error');
+                  errors.push("Internal Server Error");
                   return res
                     .status(200)
                     .json({ message: errors, success: false });
@@ -109,9 +112,9 @@ signup = async (req, res) => {
                 await user.save();
                 return res
                   .status(200)
-                  .json({ message: 'User created', success: true });
+                  .json({ message: "User created", success: true });
               } catch (err) {
-                errors.push('Internal Server Error');
+                errors.push("Internal Server Error");
                 return res
                   .status(200)
                   .json({ message: errors, success: false });
@@ -122,7 +125,7 @@ signup = async (req, res) => {
       }
     }
   } catch (err) {
-    errors.push('Internal Server Error');
+    errors.push("Internal Server Error");
     return res.status(200).json({ message: errors, success: false });
   }
 };
@@ -141,16 +144,16 @@ fetchProfile = async (req, res) => {
 
     if (user) {
       return res.status(200).json({
-        message: 'Fetch Profile Success',
+        message: "Fetch Profile Success",
         user,
         success: true,
       });
     } else {
-      errors.push('Fetch Profile Failed');
+      errors.push("Fetch Profile Failed");
       return res.status(200).json({ message: errors, success: false });
     }
   } catch (err) {
-    errors.push('Internal Server Error');
+    errors.push("Internal Server Error");
     return res.status(200).json({ message: errors, success: false });
   }
 };
@@ -172,16 +175,16 @@ searchProfiles = async (req, res) => {
 
     if (users) {
       return res.status(200).json({
-        message: 'Search Profile Success',
+        message: "Search Profile Success",
         users,
         success: true,
       });
     } else {
-      errors.push('Search Profile Failed');
+      errors.push("Search Profile Failed");
       return res.status(200).json({ message: errors, success: false });
     }
   } catch (err) {
-    errors.push('Internal Server Error');
+    errors.push("Internal Server Error");
     return res.status(200).json({ message: errors, success: false });
   }
 };
