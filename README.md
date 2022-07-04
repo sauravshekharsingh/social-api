@@ -32,7 +32,7 @@ Install dependencies
 Start the server
 
 ```bash
-  npm start
+  npm devStart
 ```
 
 ## Environment Variables
